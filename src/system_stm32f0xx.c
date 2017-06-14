@@ -82,6 +82,7 @@
   */
 
 #include "stm32f0xx.h"
+#include "stm32f0xx_rcc.h"
 
 /**
   * @}
@@ -279,7 +280,7 @@ void SystemCoreClockUpdate (void)
       pllmull = RCC->CFGR & RCC_CFGR_PLLMUL;
       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
       pllmull = ( pllmull >> 18) + 2;
-      predivfactor = (RCC->CFGR2 & RCC_CFGR2_PREDIV) + 1;
+      predivfactor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
 
       if (pllsource == RCC_CFGR_PLLSRC_HSE_PREDIV)
       {

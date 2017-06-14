@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm32f0xx_cec.h
   * @author  MCD Application Team
-  * @version V1.0.1
-  * @date    20-April-2012
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file contains all the functions prototypes for the CEC firmware 
-  *          library.
+  *          library, applicable only for STM32F051, STM32F042 and STM32F072 devices.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -138,7 +138,7 @@ typedef struct
   * @{
   */
 #define CEC_LongBitPeriodError_Off      ((uint32_t)0x00000000)  /*!< Long Bit Period Error generation turned Off */
-#define CEC_LongBitPeriodError_On       CEC_CFGR_LBPEGEN //CEC_CFGR_LREGEN         /*!< Long Bit Period Error generation turned On  */
+#define CEC_LongBitPeriodError_On       CEC_CFGR_LREGEN         /*!< Long Bit Period Error generation turned On  */
 
 #define IS_CEC_LONG_BIT_PERIOD_ERROR(ERROR) (((ERROR) == CEC_LongBitPeriodError_Off) || \
                                              ((ERROR) == CEC_LongBitPeriodError_On))
@@ -192,7 +192,7 @@ typedef struct
 #define CEC_IT_RXACKE                   CEC_IER_RXACKEIE
 #define CEC_IT_LBPE                     CEC_IER_LBPEIE
 #define CEC_IT_SBPE                     CEC_IER_SBPEIE
-#define CEC_IT_BRE                      CEC_IER_BREIE
+#define CEC_IT_BRE                      CEC_IER_BREIEIE
 #define CEC_IT_RXOVR                    CEC_IER_RXOVRIE
 #define CEC_IT_RXEND                    CEC_IER_RXENDIE
 #define CEC_IT_RXBR                     CEC_IER_RXBRIE

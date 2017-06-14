@@ -80,15 +80,15 @@ void USART1_Configuration(u32 BaudRate)
 #endif
 
 #if defined (STM32F0DISCOVERY)
-#include "usb_lib.h"
+//#include "usb_lib.h"
 #ifdef USEUSB
 #include "usb_desc.h"
 #endif
-#include "hw_config.h"
+//#include "hw_config.h"
 #ifdef USEUSB
 #include "usb_pwr.h"
 #endif
-#include "stm32eeprom.h"
+//#include "stm32eeprom.h"
 #ifndef USEUSB
 #include "stm32f0xx_usart.h"
 void USART1_Configuration(uint32_t BaudRate)
@@ -130,7 +130,7 @@ void USART1_Configuration(uint32_t BaudRate)
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 	USART_Cmd(USART1, ENABLE);
 }
-//#endif
+#endif
 
 #endif
 

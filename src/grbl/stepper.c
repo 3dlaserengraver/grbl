@@ -1400,7 +1400,7 @@ void TIM_Configuration(TIM_TypeDef* TIMER, uint16_t Period, uint16_t Prescaler, 
 	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 	if (TIMER == TIM2) { NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn; }
 	else if (TIMER == TIM3) { NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn; }
-	else if (TIMER == TIM6) { NVIC_InitStructure.NVIC_IRQChannel = TIM6_IRQn; } // Was TIM4
+	else if (TIMER == TIM6) { NVIC_InitStructure.NVIC_IRQChannel = TIM6_DAC_IRQn; } // Was TIM4
 
 	//NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PP;
 	//NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
