@@ -404,7 +404,7 @@
 
   // Define step pulse output pins. NOTE: All step bit pins must be on the same port.
 #define STEP_PORT       GPIOA
-#define RCC_STEP_PORT   RCC_APB2Periph_GPIOA
+#define RCC_STEP_PORT   RCC_AHBPeriph_GPIOA
 #define X_STEP_BIT      0
 #define Y_STEP_BIT      1
 #define Z_STEP_BIT      2
@@ -412,7 +412,7 @@
 
   // Define step direction output pins. NOTE: All direction pins must be on the same port.
 #define DIRECTION_PORT      GPIOA
-#define RCC_DIRECTION_PORT   RCC_APB2Periph_GPIOA
+#define RCC_DIRECTION_PORT   RCC_AHBPeriph_GPIOA
 #define X_DIRECTION_BIT   3
 #define Y_DIRECTION_BIT   4
 #define Z_DIRECTION_BIT   5
@@ -420,7 +420,7 @@
 
   // Define stepper driver enable/disable output pin.
 #define STEPPERS_DISABLE_PORT   GPIOA
-#define RCC_STEPPERS_DISABLE_PORT RCC_APB2Periph_GPIOA
+#define RCC_STEPPERS_DISABLE_PORT RCC_AHBPeriph_GPIOA
 #define STEPPERS_DISABLE_BIT    6
 #define STEPPERS_DISABLE_MASK   (1<<STEPPERS_DISABLE_BIT)
 #define SetStepperDisableBit() GPIO_SetBits(STEPPERS_DISABLE_PORT,STEPPERS_DISABLE_MASK)
@@ -432,7 +432,7 @@
 #define LIMIT_PIN        GPIOB
 #define LIMIT_PORT       GPIOB
 #define RCC_LIMIT_PORT   RCC_AHBPeriph_GPIOB
-#define GPIO_LIMIT_PORT  GPIO_PortSourceGPIOB
+#define GPIO_LIMIT_PORT  GPIOB //GPIO_PortSourceGPIOB TODO - Check this port source
 #define X_LIMIT_BIT      10
 #define Y_LIMIT_BIT      11
 #define Z_LIMIT_BIT      12
@@ -441,7 +441,7 @@
 
   // Define spindle enable and spindle direction output pins.
 #define SPINDLE_ENABLE_PORT   GPIOB
-#define RCC_SPINDLE_ENABLE_PORT RCC_APB2Periph_GPIOB
+#define RCC_SPINDLE_ENABLE_PORT RCC_AHBPeriph_GPIOB
 #define SPINDLE_ENABLE_BIT    0  //
 #ifndef USE_SPINDLE_DIR_AS_ENABLE_PIN
 #define SPINDLE_DIRECTION_DDR   GPIOB
@@ -467,8 +467,8 @@
   // NOTE: All CONTROLs pins must be on the same port and not on a port with other input pins (limits).
 #define CONTROL_PIN_PORT              GPIOB
 #define CONTROL_PORT                  GPIOB
-#define RCC_CONTROL_PORT              RCC_APB2Periph_GPIOB
-#define GPIO_CONTROL_PORT             GPIO_PortSourceGPIOB
+#define RCC_CONTROL_PORT              RCC_AHBPeriph_GPIOB
+#define GPIO_CONTROL_PORT             GPIOB//GPIO_PortSourceGPIOB // TODO - Double check this
 #define CONTROL_RESET_BIT             5
 #define CONTROL_FEED_HOLD_BIT         6
 #define CONTROL_CYCLE_START_BIT       7
@@ -477,7 +477,7 @@
 
   // Define probe switch input pin.
 #define PROBE_PORT                    GPIOA
-#define RCC_PROBE_PORT                RCC_APB2Periph_GPIOA
+#define RCC_PROBE_PORT                RCC_AHBPeriph_GPIOA
 #define PROBE_BIT                     15
 #define PROBE_MASK                    (1<<PROBE_BIT)
 
@@ -488,7 +488,7 @@
 #define SPINDLE_PWM_FREQUENCY       10000                   // KHz
 #define SPINDLE_PWM_DDR	            GPIOA
 #define SPINDLE_PWM_PORT            GPIOA
-#define RCC_SPINDLE_PWM_PORT        RCC_APB2Periph_GPIOA
+#define RCC_SPINDLE_PWM_PORT        RCC_AHBPeriph_GPIOA
 #define SPINDLE_PWM_BIT	            8
 #endif // End of VARIABLE_SPINDLE
 #define SPINDLE_PWM_MAX_VALUE       (1000000 / SPINDLE_PWM_FREQUENCY)

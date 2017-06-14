@@ -92,7 +92,7 @@
   */
 
 #define PWR_Regulator_ON                ((uint32_t)0x00000000)
-#define PWR_Regulator_LowPower          PWR_CR_LPSDSR
+#define PWR_Regulator_LowPower          PWR_CR_LPDS //PWR_CR_LPSDSR
 #define IS_PWR_REGULATOR(REGULATOR) (((REGULATOR) == PWR_Regulator_ON) || \
                                      ((REGULATOR) == PWR_Regulator_LowPower))
 /**

@@ -18,7 +18,8 @@
 #define __USB_LIB_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x.h"
+//#include "stm32f10x.h"
+#include "stm32f0xx.h"
 #include "usb_type.h"
 #include "usb_regs.h"
 #include "usb_def.h"

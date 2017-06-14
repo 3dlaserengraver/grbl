@@ -329,7 +329,7 @@ ErrorStatus RTC_DeInit(void)
     RTC->PRER      = (uint32_t)0x007F00FF;
     RTC->ALRMAR    = (uint32_t)0x00000000;
     RTC->SHIFTR    = (uint32_t)0x00000000;
-    RTC->CAL       = (uint32_t)0x00000000;
+    RTC->CALR      = (uint32_t)0x00000000;
     RTC->ALRMASSR  = (uint32_t)0x00000000;
 
     /* Reset ISR register and exit initialization mode */
@@ -1525,7 +1525,7 @@ void RTC_CalibOutputConfig(uint32_t RTC_CalibOutput)
   RTC->WPR = 0x53;
   
   /*clear flags before config*/
-  RTC->CR &= (uint32_t)~(RTC_CR_CALSEL);
+  RTC->CR &= (uint32_t)~(RTC_CR_COSEL);
 
   /* Configure the RTC_CR register */
   RTC->CR |= (uint32_t)RTC_CalibOutput;
@@ -1581,7 +1581,7 @@ ErrorStatus RTC_SmoothCalibConfig(uint32_t RTC_SmoothCalibPeriod,
   if ((RTC->ISR & RTC_ISR_RECALPF) == RESET)
   {
     /* Configure the Smooth calibration settings */
-    RTC->CAL = (uint32_t)((uint32_t)RTC_SmoothCalibPeriod | (uint32_t)RTC_SmoothCalibPlusPulses | (uint32_t)RTC_SmouthCalibMinusPulsesValue);
+    RTC->CALR = (uint32_t)((uint32_t)RTC_SmoothCalibPeriod | (uint32_t)RTC_SmoothCalibPlusPulses | (uint32_t)RTC_SmouthCalibMinusPulsesValue);
 
     status = SUCCESS;
   }

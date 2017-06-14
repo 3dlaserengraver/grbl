@@ -234,8 +234,8 @@ void FLASH_Unlock(void)
   if((FLASH->CR & FLASH_CR_LOCK) != RESET)
   {
     /* Unlocking the program memory access */
-    FLASH->KEYR = FLASH_FKEY1;
-    FLASH->KEYR = FLASH_FKEY2;
+    FLASH->KEYR = FLASH_KEY1;
+    FLASH->KEYR = FLASH_KEY2;
   }
 }
 

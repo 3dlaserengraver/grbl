@@ -55,7 +55,9 @@ void probe_init()
 #ifdef DISABLE_PROBE_PIN_PULL_UP
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 #else
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 #endif
 	GPIO_InitStructure.GPIO_Pin = PROBE_MASK;
 	GPIO_Init(PROBE_PORT, &GPIO_InitStructure);

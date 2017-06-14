@@ -485,7 +485,7 @@ void RCC_PLLConfig(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul)
   assert_param(IS_RCC_PLL_MUL(RCC_PLLMul));
 
   /* Clear PLL Source [16] and Multiplier [21:18] bits */
-  RCC->CFGR &= ~(RCC_CFGR_PLLMULL | RCC_CFGR_PLLSRC);
+  RCC->CFGR &= ~(RCC_CFGR_PLLMUL | RCC_CFGR_PLLSRC);
 
   /* Set the PLL Source and Multiplier */
   RCC->CFGR |= (uint32_t)(RCC_PLLSource | RCC_PLLMul);
@@ -533,7 +533,7 @@ void RCC_PREDIV1Config(uint32_t RCC_PREDIV1_Div)
 
   tmpreg = RCC->CFGR2;
   /* Clear PREDIV1[3:0] bits */
-  tmpreg &= ~(RCC_CFGR2_PREDIV1);
+  tmpreg &= ~(RCC_CFGR2_PREDIV_1);
   /* Set the PREDIV1 division factor */
   tmpreg |= RCC_PREDIV1_Div;
   /* Store the new value */
@@ -806,7 +806,7 @@ void RCC_ADCCLKConfig(uint32_t RCC_ADCCLK)
   RCC->CFGR |= RCC_ADCCLK & 0xFFFF;
 
   /* Clear ADCSW bit */
-  RCC->CFGR3 &= ~RCC_CFGR3_ADCSW; 
+  RCC->CFGR3 &= ~0x00000100U; //RCC_CFGR3_ADCSW; Bit 8
   /* Set ADCSW bits according to RCC_ADCCLK value */
   RCC->CFGR3 |= RCC_ADCCLK >> 16;  
 }
@@ -926,7 +926,7 @@ void RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks)
       break;
     case 0x08:  /* PLL used as system clock */
       /* Get PLL clock source and multiplication factor ----------------------*/
-      pllmull = RCC->CFGR & RCC_CFGR_PLLMULL;
+      pllmull = RCC->CFGR & RCC_CFGR_PLLMUL;
       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
       pllmull = ( pllmull >> 18) + 2;
       
@@ -937,7 +937,7 @@ void RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks)
       }
       else
       {
-        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV_1) + 1;
         /* HSE oscillator clock selected as PREDIV1 clock entry */
         RCC_Clocks->SYSCLK_Frequency = (HSE_VALUE / prediv1factor) * pllmull; 
       }      
@@ -962,7 +962,7 @@ void RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks)
   RCC_Clocks->PCLK_Frequency = RCC_Clocks->HCLK_Frequency >> presc;
 
   /* ADCCLK clock frequency */
-  if((RCC->CFGR3 & RCC_CFGR3_ADCSW) != RCC_CFGR3_ADCSW)
+  if((RCC->CFGR3 & RCC_CFGR3_ADCSW) != 0x00000100U) //RCC_CFGR3_ADCSW)
   {
     /* ADC Clock is HSI14 Osc. */
     RCC_Clocks->ADCCLK_Frequency = HSI14_VALUE;

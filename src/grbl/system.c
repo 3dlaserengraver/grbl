@@ -66,12 +66,15 @@ void system_init()
 #endif
 #ifdef STM32F0DISCOVERY
   GPIO_InitTypeDef GPIO_InitStructure;
-  RCC_APB2PeriphClockCmd(RCC_CONTROL_PORT | RCC_APB2Periph_AFIO, ENABLE);
+  //RCC_APB2PeriphClockCmd(RCC_CONTROL_PORT | RCC_APB2Periph_AFIO, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_CONTROL_PORT, ENABLE);
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 #ifdef DISABLE_CONTROL_PIN_PULL_UP
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 #else
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 #endif
   GPIO_InitStructure.GPIO_Pin = CONTROL_MASK;
   GPIO_Init(CONTROL_PORT, &GPIO_InitStructure);
@@ -89,9 +92,10 @@ void system_init()
   EXTI_Init(&EXTI_InitStructure);
 
   NVIC_InitTypeDef NVIC_InitStructure;
-  NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn; //Enable keypad external interrupt channel
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02; //Priority 2,
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02; //Sub priority 2
+  NVIC_InitStructure.NVIC_IRQChannel = EXTI4_15_IRQn; //Enable keypad external interrupt channel
+  //NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02; //Priority 2,
+  //NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02; //Sub priority 2
+  NVIC_InitStructure.NVIC_IRQChannelPriority = 0x02; // Priority 2
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //Enable external interrupt channel
   NVIC_Init(&NVIC_InitStructure);
 #endif
@@ -209,7 +213,7 @@ void EXTI9_5_IRQHandler(void)
 			bit_true(sys_rt_exec_state, EXEC_SAFETY_DOOR);
 		}
 #endif
-		NVIC_ClearPendingIRQ(EXTI9_5_IRQn);
+		NVIC_ClearPendingIRQ(EXTI4_15_IRQn);
 }
 }
 #endif

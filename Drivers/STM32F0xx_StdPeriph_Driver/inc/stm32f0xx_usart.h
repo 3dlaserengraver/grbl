@@ -400,7 +400,7 @@ typedef struct
 #define USART_FLAG_RTO                       USART_ISR_RTOF
 #define USART_FLAG_nCTSS                     USART_ISR_CTS 
 #define USART_FLAG_CTS                       USART_ISR_CTSIF
-#define USART_FLAG_LBD                       USART_ISR_LBD
+#define USART_FLAG_LBD                       USART_ISR_LBDF
 #define USART_FLAG_TXE                       USART_ISR_TXE
 #define USART_FLAG_TC                        USART_ISR_TC
 #define USART_FLAG_RXNE                      USART_ISR_RXNE

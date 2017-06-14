@@ -138,7 +138,7 @@ typedef struct
   * @{
   */
 #define CEC_LongBitPeriodError_Off      ((uint32_t)0x00000000)  /*!< Long Bit Period Error generation turned Off */
-#define CEC_LongBitPeriodError_On       CEC_CFGR_LREGEN         /*!< Long Bit Period Error generation turned On  */
+#define CEC_LongBitPeriodError_On       CEC_CFGR_LBPEGEN //CEC_CFGR_LREGEN         /*!< Long Bit Period Error generation turned On  */
 
 #define IS_CEC_LONG_BIT_PERIOD_ERROR(ERROR) (((ERROR) == CEC_LongBitPeriodError_Off) || \
                                              ((ERROR) == CEC_LongBitPeriodError_On))
@@ -192,7 +192,7 @@ typedef struct
 #define CEC_IT_RXACKE                   CEC_IER_RXACKEIE
 #define CEC_IT_LBPE                     CEC_IER_LBPEIE
 #define CEC_IT_SBPE                     CEC_IER_SBPEIE
-#define CEC_IT_BRE                      CEC_IER_BREIEIE
+#define CEC_IT_BRE                      CEC_IER_BREIE
 #define CEC_IT_RXOVR                    CEC_IER_RXOVRIE
 #define CEC_IT_RXEND                    CEC_IER_RXENDIE
 #define CEC_IT_RXBR                     CEC_IER_RXBRIE

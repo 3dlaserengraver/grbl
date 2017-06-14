@@ -18,7 +18,7 @@
 							<option id="com.atollic.truestudio.toolchain_options.mcu.1477557770" name="Microcontroller" superClass="com.atollic.truestudio.toolchain_options.mcu" value="STM32F051R8" valueType="string"/>
 							<option id="com.atollic.truestudio.toolchain_options.vendor.1450576351" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor" value="STMicroelectronics" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.atollic.truestudio.exe.debug.toolchain.platform.1410041173" isAbstract="false" name="Debug platform" osList="all" superClass="com.atollic.truestudio.exe.debug.toolchain.platform"/>
-							<builder buildPath="${workspace_loc:/grblSTM32F0}/Debug" id="com.atollic.truestudio.mbs.builder1.21397674" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="com.atollic.truestudio.mbs.builder1"/>
+							<builder buildPath="${workspace_loc:/grblSTM32F0}/Debug" customBuilderProperties="toolChainpathString=C:\\Program Files (x86)\\Atollic\\TrueSTUDIO for ARM 7.1.2\\ARMTools\\bin|toolChainpathType=1|" id="com.atollic.truestudio.mbs.builder1.21397674" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="com.atollic.truestudio.mbs.builder1"/>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.as.1962454415" name="Assembler" superClass="com.atollic.truestudio.exe.debug.toolchain.as">
 								<option id="com.atollic.truestudio.common_options.target.endianess.311566230" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.299451468" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F051R8" valueType="enumerated"/>
@@ -36,6 +36,7 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../src/grbl"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_StdPeriph_Driver/inc"/>
+									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 								</option>
 								<inputType id="com.atollic.truestudio.as.input.289501006" name="Input" superClass="com.atollic.truestudio.as.input"/>
 							</tool>
@@ -51,6 +52,7 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../src/grbl"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_StdPeriph_Driver/inc"/>
+									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.1419149858" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.793147616" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F051R8" valueType="enumerated"/>
@@ -153,6 +155,7 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="/src/grbl"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_StdPeriph_Driver/inc"/>
+									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 								</option>
 								<inputType id="com.atollic.truestudio.as.input.1796278543" name="Input" superClass="com.atollic.truestudio.as.input"/>
 							</tool>
@@ -168,6 +171,7 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="/src/grbl"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_StdPeriph_Driver/inc"/>
+									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.967537789" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.2090315694" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F051R8" valueType="enumerated"/>

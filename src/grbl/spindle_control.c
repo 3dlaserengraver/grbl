@@ -104,7 +104,9 @@ void spindle_init()
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_SPINDLE_ENABLE_PORT, ENABLE);
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 #ifdef USE_SPINDLE_DIR_AS_ENABLE_PIN
   GPIO_InitStructure.GPIO_Pin = 1 << SPINDLE_ENABLE_BIT;
 #else
@@ -138,7 +140,9 @@ void spindle_init()
 
   RCC_APB2PeriphClockCmd(RCC_SPINDLE_PWM_PORT, ENABLE);
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_Pin = 1 << SPINDLE_PWM_BIT;
   GPIO_Init(SPINDLE_PWM_PORT, &GPIO_InitStructure);
 
