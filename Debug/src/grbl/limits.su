@@ -1,8 +1,8 @@
 core_cm0.h:527:22:NVIC_DisableIRQ	16	static
 core_cm0.h:567:22:NVIC_ClearPendingIRQ	16	static
 limits.c:33:6:limits_init	32	static
-limits.c:131:6:limits_disable	8	static
-limits.c:149:9:limits_get_state	24	static
-limits.c:193:6:EXTI15_10_IRQHandler	8	static
-limits.c:276:6:limits_go_home	88	static
-limits.c:471:6:limits_soft_check	16	static
+limits.c:133:6:limits_disable	8	static
+limits.c:151:9:limits_get_state	24	static
+limits.c:195:6:EXTI15_10_IRQHandler	8	static
+limits.c:278:6:limits_go_home	88	static
+limits.c:473:6:limits_soft_check	16	static

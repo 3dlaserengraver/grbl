@@ -1,4 +1,4 @@
-eeprom.c:154:15:eeprom_get_char	16	static
-eeprom.c:184:6:eeprom_put_char	16	static
-eeprom.c:245:6:memcpy_to_eeprom_with_checksum	32	static
-eeprom.c:260:5:memcpy_from_eeprom_with_checksum	40	static
+eeprom.c:223:15:eeprom_get_char	16	static
+eeprom.c:253:6:eeprom_put_char	16	static
+eeprom.c:314:6:memcpy_to_eeprom_with_checksum	32	static
+eeprom.c:329:5:memcpy_from_eeprom_with_checksum	40	static

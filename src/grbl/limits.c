@@ -91,6 +91,8 @@ void limits_init()
 	GPIO_InitTypeDef GPIO_InitStructure;
 	//RCC_APB2PeriphClockCmd(RCC_LIMIT_PORT | RCC_APB2Periph_AFIO, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_LIMIT_PORT, ENABLE);
+	/* Enable SYSCFG's APB interface clock */
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; // From STM32F103C8 Input Pull-Up
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
@@ -100,9 +102,9 @@ void limits_init()
 
 	if (bit_istrue(settings.flags, BITFLAG_HARD_LIMIT_ENABLE))
 	{
-		GPIO_EXTILineConfig(GPIO_LIMIT_PORT, X_LIMIT_BIT);
-		GPIO_EXTILineConfig(GPIO_LIMIT_PORT, Y_LIMIT_BIT);
-		GPIO_EXTILineConfig(GPIO_LIMIT_PORT, Z_LIMIT_BIT);
+		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, X_LIMIT_BIT);
+		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, Y_LIMIT_BIT);
+		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, Z_LIMIT_BIT);
 
 		EXTI_InitTypeDef EXTI_InitStructure;
 		EXTI_InitStructure.EXTI_Line = LIMIT_MASK;    //

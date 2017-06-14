@@ -432,7 +432,7 @@
 #define LIMIT_PIN        GPIOB
 #define LIMIT_PORT       GPIOB
 #define RCC_LIMIT_PORT   RCC_AHBPeriph_GPIOB
-#define GPIO_LIMIT_PORT  GPIOB //GPIO_PortSourceGPIOB TODO - Check this port source
+#define GPIO_LIMIT_PORT  EXTI_PortSourceGPIOB
 #define X_LIMIT_BIT      10
 #define Y_LIMIT_BIT      11
 #define Z_LIMIT_BIT      12
@@ -468,7 +468,7 @@
 #define CONTROL_PIN_PORT              GPIOB
 #define CONTROL_PORT                  GPIOB
 #define RCC_CONTROL_PORT              RCC_AHBPeriph_GPIOB
-#define GPIO_CONTROL_PORT             GPIOB//GPIO_PortSourceGPIOB // TODO - Double check this
+#define GPIO_CONTROL_PORT             EXTI_PortSourceGPIOB
 #define CONTROL_RESET_BIT             5
 #define CONTROL_FEED_HOLD_BIT         6
 #define CONTROL_CYCLE_START_BIT       7

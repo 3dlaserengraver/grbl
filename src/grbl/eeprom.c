@@ -47,7 +47,12 @@
 #include "stm32eeprom.h"
 #include "settings.h"
 #endif
-#if defined(WIN32) || defined (STM32F103C8)
+#ifdef STM32F0DISCOVERY
+#include <string.h>
+#include "stm32eeprom.h"
+#include "settings.h"
+#endif
+#if defined(WIN32) || defined (STM32F103C8) || defined (STM32F0DISCOVERY)
 unsigned char EE_Buffer[0x400];
 #endif
 #if defined(WIN32)
@@ -142,6 +147,70 @@ void eeprom_init()
 #endif
 #endif
 
+#ifdef STM32F0DISCOVERY
+#ifndef NOEEPROMSUPPORT
+void eeprom_flush()
+{
+	uint32_t nAddress = EEPROM_START_ADDRESS;
+	uint16_t *pBuffer = (uint16_t *)EE_Buffer;
+	uint16_t nSize = PAGE_SIZE;
+
+	FLASH_Status FlashStatus = FLASH_COMPLETE;
+
+	/* Erase Page0 */
+	FlashStatus = FLASH_ErasePage(EEPROM_START_ADDRESS);
+
+	/* If erase operation was failed, a Flash error code is returned */
+	if (FlashStatus != FLASH_COMPLETE)
+	{
+		return;
+	}
+
+	while (nSize > 0)
+	{
+		if (*pBuffer != 0xffff)
+		{
+			FLASH_ProgramHalfWord(nAddress, *pBuffer++);
+		}
+		else
+		{
+			pBuffer++;
+		}
+		if (*pBuffer != 0xffff)
+		{
+			FLASH_ProgramHalfWord(nAddress + 2, *pBuffer++);
+		}
+		else
+		{
+			pBuffer++;
+		}
+		nSize -= 4;
+		nAddress += 4;
+	}
+}
+void eeprom_init()
+{
+	uint16_t VarIdx = 0;
+	uint8_t *pTmp = EE_Buffer;
+
+	for (VarIdx = 0; VarIdx < PAGE_SIZE; VarIdx++)
+	{
+		*pTmp++ = (*(__IO uint8_t*)(EEPROM_START_ADDRESS + VarIdx));
+	}
+
+	if (EE_Buffer[0] != SETTINGS_VERSION)
+	{
+		pTmp = EE_Buffer;
+
+		for (VarIdx = 0; VarIdx < PAGE_SIZE; VarIdx++)
+		{
+			*pTmp++ = 0xFF;
+		}
+	}
+}
+#endif
+#endif
+
 /*! \brief  Read byte from EEPROM.
  *
  *  This function reads one byte from a given EEPROM address.
@@ -159,7 +228,7 @@ unsigned char eeprom_get_char( unsigned int addr )
 	EECR = (1<<EERE); // Start EEPROM read operation.
 	return EEDR; // Return the byte read from EEPROM.
 #endif
-#if defined(WIN32) || defined(STM32F103C8)
+#if defined(WIN32) || defined(STM32F103C8) || defined(STM32F0DISCOVERY)
 	return EE_Buffer[addr];
 #endif
 }
@@ -234,7 +303,7 @@ void eeprom_put_char( unsigned int addr, unsigned char new_value )
 	
 	sei(); // Restore interrupt flag state.
 #endif
-#if defined(WIN32) || defined(STM32F103C8)
+#if defined(WIN32) || defined(STM32F103C8) || defined(STM32F0DISCOVERY)
 	EE_Buffer[addr] = new_value;
 #endif
 }
@@ -250,7 +319,7 @@ void memcpy_to_eeprom_with_checksum(unsigned int destination, char *source, unsi
     eeprom_put_char(destination++, *(source++)); 
   }
   eeprom_put_char(destination, checksum);
-#if defined(WIN32) || defined(STM32F103C8)
+#if defined(WIN32) || defined(STM32F103C8) || defined(STM32F0DISCOVERY)
 #ifndef NOEEPROMSUPPORT
   eeprom_flush();
 #endif

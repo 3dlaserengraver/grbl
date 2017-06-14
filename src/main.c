@@ -88,7 +88,7 @@ void USART1_Configuration(u32 BaudRate)
 #ifdef USEUSB
 #include "usb_pwr.h"
 #endif
-//#include "stm32eeprom.h"
+#include "stm32eeprom.h"
 #ifndef USEUSB
 #include "stm32f0xx_usart.h"
 void USART1_Configuration(uint32_t BaudRate)
@@ -285,24 +285,24 @@ void LedBlink(void)
 	nOnFlag = (nOnFlag == Bit_SET) ? Bit_RESET : Bit_SET;
 }
 #endif
-//#if defined (STM32F0DISCOVERY)
-//void _delay_ms(uint32_t x)
-//{
-//	u32 temp;
-//	SysTick->LOAD = (u32)72000000 / 8000;                     // Loading time
-//	SysTick->VAL = 0x00;                                            // Empty the counter
-//	SysTick->CTRL = 0x01;                                           // Start from bottom
-//	do
-//	{
-//		temp = SysTick->CTRL;
-//	} while (temp & 0x01 && !(temp&(1 << 16)));                             // Wait time arrive
-//	SysTick->CTRL = 0x00;                                            // Close the counter
-//	SysTick->VAL = 0X00;                                            // Empty the counter
-//}
-//void LedBlink(void)
-//{
-//	static BitAction nOnFlag = Bit_SET;
-//	GPIO_WriteBit(GPIOC, GPIO_Pin_13, nOnFlag);
-//	nOnFlag = (nOnFlag == Bit_SET) ? Bit_RESET : Bit_SET;
-//}
-//#endif
+#if defined (STM32F0DISCOVERY)
+void _delay_ms(uint32_t x)
+{
+	uint32_t temp;
+	SysTick->LOAD = (uint32_t)72000000 / 8000;                     // Loading time
+	SysTick->VAL = 0x00;                                            // Empty the counter
+	SysTick->CTRL = 0x01;                                           // Start from bottom
+	do
+	{
+		temp = SysTick->CTRL;
+	} while (temp & 0x01 && !(temp&(1 << 16)));                             // Wait time arrive
+	SysTick->CTRL = 0x00;                                            // Close the counter
+	SysTick->VAL = 0X00;                                            // Empty the counter
+}
+void LedBlink(void)
+{
+	static BitAction nOnFlag = Bit_SET;
+	GPIO_WriteBit(GPIOC, GPIO_Pin_13, nOnFlag);
+	nOnFlag = (nOnFlag == Bit_SET) ? Bit_RESET : Bit_SET;
+}
+#endif

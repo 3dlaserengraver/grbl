@@ -28,6 +28,9 @@
 								<option id="com.atollic.truestudio.as.symbols.defined.1034292658" name="Defined symbols" superClass="com.atollic.truestudio.as.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F051x8"/>
 									<listOptionValue builtIn="false" value="HSI48_VALUE=((uint32_t)48000000)"/>
+									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="STM32F051"/>
+									<listOptionValue builtIn="false" value="NOEEPROMSUPPORT"/>
 								</option>
 								<option id="com.atollic.truestudio.as.general.incpath.2018252200" name="Include path" superClass="com.atollic.truestudio.as.general.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src"/>
@@ -38,6 +41,7 @@
 									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_CPAL_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../usb"/>
+									<listOptionValue builtIn="false" value="../util"/>
 								</option>
 								<inputType id="com.atollic.truestudio.as.input.289501006" name="Input" superClass="com.atollic.truestudio.as.input"/>
 							</tool>
@@ -45,6 +49,9 @@
 								<option id="com.atollic.truestudio.gcc.symbols.defined.486628701" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F051x8"/>
 									<listOptionValue builtIn="false" value="HSI48_VALUE=((uint32_t)48000000)"/>
+									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="STM32F051"/>
+									<listOptionValue builtIn="false" value="NOEEPROMSUPPORT"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.directories.select.81147847" name="Include path" superClass="com.atollic.truestudio.gcc.directories.select" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src"/>
@@ -55,6 +62,7 @@
 									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_CPAL_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../usb"/>
+									<listOptionValue builtIn="false" value="../util"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.1419149858" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.793147616" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F051R8" valueType="enumerated"/>
@@ -114,14 +122,6 @@
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.secoutput.1293833807" name="Other" superClass="com.atollic.truestudio.exe.debug.toolchain.secoutput"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.atollic.truestudio.exe.debug.1567658605.255367244" name="core_cm3.h" rcbsApplicability="disable" resourcePath="Drivers/CMSIS/Include/core_cm3.h" toolsToInvoke="">
-						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.804799926" name="Resource Custom Build Step">
-							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.1564966129" name="Resource Custom Build Step Input Type">
-								<additionalInput kind="additionalinputdependency" paths=""/>
-							</inputType>
-							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1829927145" name="Resource Custom Build Step Output Type"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry excluding="STM32F0xx_CPAL_Driver|CMSIS/Device/ST/STM32F0xx/Source/Templates" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -157,6 +157,9 @@
 								<option id="com.atollic.truestudio.as.symbols.defined.233437807" name="Defined symbols" superClass="com.atollic.truestudio.as.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F051x8"/>
 									<listOptionValue builtIn="false" value="HSI48_VALUE=((uint32_t)48000000)"/>
+									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="STM32F051"/>
+									<listOptionValue builtIn="false" value="NOEEPROMSUPPORT"/>
 								</option>
 								<option id="com.atollic.truestudio.as.general.incpath.766769677" name="Include path" superClass="com.atollic.truestudio.as.general.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src"/>
@@ -168,6 +171,7 @@
 									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_CPAL_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../usb"/>
+									<listOptionValue builtIn="false" value="../util"/>
 								</option>
 								<inputType id="com.atollic.truestudio.as.input.1796278543" name="Input" superClass="com.atollic.truestudio.as.input"/>
 							</tool>
@@ -175,6 +179,9 @@
 								<option id="com.atollic.truestudio.gcc.symbols.defined.637613439" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F051x8"/>
 									<listOptionValue builtIn="false" value="HSI48_VALUE=((uint32_t)48000000)"/>
+									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="STM32F051"/>
+									<listOptionValue builtIn="false" value="NOEEPROMSUPPORT"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.directories.select.1444864938" name="Include path" superClass="com.atollic.truestudio.gcc.directories.select" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src"/>
@@ -186,6 +193,7 @@
 									<listOptionValue builtIn="false" value="../stm_usb_fs_lib/inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F0xx_CPAL_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../usb"/>
+									<listOptionValue builtIn="false" value="../util"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.967537789" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.2090315694" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F051R8" valueType="enumerated"/>
