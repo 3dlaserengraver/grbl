@@ -457,10 +457,10 @@
   // Define flood and mist coolant enable output pins.
   // a later date if flash and memory space allows.
 #define COOLANT_FLOOD_PORT            GPIOB
-#define RCC_COOLANT_FLOOD_PORT        RCC_APB2Periph_GPIOB
+#define RCC_COOLANT_FLOOD_PORT        RCC_AHBPeriph_GPIOB
 #define COOLANT_FLOOD_BIT             2
 #define COOLANT_MIST_PORT             GPIOB
-#define RCC_COOLANT_MIST_PORT         RCC_APB2Periph_GPIOB
+#define RCC_COOLANT_MIST_PORT         RCC_AHBPeriph_GPIOB
 #define COOLANT_MIST_BIT              3
 
   // Define user-control controls (cycle start, reset, feed hold) input pins.
