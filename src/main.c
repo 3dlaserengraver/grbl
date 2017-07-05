@@ -20,6 +20,7 @@
 */
 
 #include "grbl.h"
+#include "stm32f0xx_gpio.h"
 // Declare system global variable structure
 system_t sys;
 int32_t sys_position[N_AXIS];      // Real-time machine (aka home) position vector in steps.
@@ -81,6 +82,7 @@ void USART1_Configuration(u32 BaudRate)
 
 #if defined (STM32F0DISCOVERY)
 //#include "usb_lib.h"
+void RCC_OscConfig(void);
 #ifdef USEUSB
 #include "usb_desc.h"
 #endif
@@ -91,8 +93,12 @@ void USART1_Configuration(u32 BaudRate)
 #include "stm32eeprom.h"
 #ifndef USEUSB
 #include "stm32f0xx_usart.h"
+
 void USART1_Configuration(uint32_t BaudRate)
 {
+
+	RCC_OscConfig();
+
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -104,19 +110,30 @@ void USART1_Configuration(uint32_t BaudRate)
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);
+
+	RCC_HCLKConfig(RCC_SYSCLK_Div1);
+	RCC_USARTCLKConfig(RCC_USART1CLK_PCLK);
+
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
 	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //CMS
+
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
 	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;		//CMS
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//CMS
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;		//CMS
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIOA->AFR[1] |= 0x110;
 
 	USART_InitStructure.USART_BaudRate = BaudRate;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -126,9 +143,11 @@ void USART1_Configuration(uint32_t BaudRate)
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART1->CR1 |= (USART_CR1_RE | USART_CR1_TE);
 	USART_Init(USART1, &USART_InitStructure);
-	//	USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
+		//USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 	USART_Cmd(USART1, ENABLE);
+
+
 }
 #endif
 
@@ -177,7 +196,8 @@ int main(void)
 #endif
 	//Set_System();
 #ifndef USEUSB
-	USART1_Configuration(115200);
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	USART1_Configuration(9600);
 #else
 	Set_USBClock();
 	USB_Interrupts_Config();
@@ -188,7 +208,7 @@ int main(void)
 	FLASH_Unlock();
 	eeprom_init();
 #endif
-	SysTick->CTRL &= 0xfffffffb;
+	 SysTick->CTRL &= 0xfffffffb;
 #endif
   // Initialize system upon power-up.
   serial_init();   // Setup serial baud rate and interrupts
@@ -306,3 +326,102 @@ void LedBlink(void)
 	nOnFlag = (nOnFlag == Bit_SET) ? Bit_RESET : Bit_SET;
 }
 #endif
+
+//RCC_AdjustHSI14CalibrationValue(16);
+//	RCC_HSICmd(ENABLE);
+//	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
+//	RCC_PLLCmd(ENABLE);
+
+////#define RCC_FLAG_HSIRDY                  ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_HSIRDY_BitNumber))
+//#define RCC_FLAG_HSIRDY                  ((uint8_t)((((uint8_t)1U) << 5U) | 1U))
+//* @retval The new state of __FLAG__ (TRUE or FALSE).
+//*/
+//#define __HAL_RCC_GET_FLAG(__FLAG__) (((((__FLAG__) >> 5U) == CR_REG_INDEX)? RCC->CR :      \
+//                                (((__FLAG__) >> 5U) == CR2_REG_INDEX)? RCC->CR2 :    \
+//                                (((__FLAG__) >> 5U) == BDCR_REG_INDEX) ? RCC->BDCR : \
+//                                RCC->CSR) & (1U << ((__FLAG__) & RCC_FLAG_MASK)))
+
+//	while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET){};
+
+	/* Wait till PLL is disabled */
+//	        while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY)  != RESET)
+//
+//#define __HAL_RCC_GET_FLAG(__FLAG__) (((((__FLAG__) >> 5U) == CR_REG_INDEX)? RCC->CR :      \
+//                                       (((__FLAG__) >> 5U) == CR2_REG_INDEX)? RCC->CR2 :    \
+//                                       (((__FLAG__) >> 5U) == BDCR_REG_INDEX) ? RCC->BDCR : \
+//                                       RCC->CSR) & (1U << ((__FLAG__) & RCC_FLAG_MASK)))
+//
+//#define RCC_FLAG_PLLRDY                  ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_PLLRDY_BitNumber))
+//#define CR_REG_INDEX                     ((uint8_t)1U)
+//#define RCC_CR_PLLRDY_BitNumber           25U
+
+void RCC_OscConfig(void){
+//	//-----HSI Configurations-----
+//	/* Enable the Internal High Speed oscillator (HSI). */
+//	//RCC_HSICmd(ENABLE);
+//
+//	/* Wait till HSI is ready */
+//	//while((RCC->CFGR &RCC_CFGR_SWS) != RCC_CFGR_SWS_HSI){};
+//
+//	if ((RCC->CFGR & RCC_CFGR_SWS) == RCC_CFGR_SWS_PLL) /* (1) */
+//	{
+//		RCC->CFGR &= (uint32_t) (~RCC_CFGR_SW); /* (2) */
+//		while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_HSI){};
+//	}
+//
+//
+//	RCC_AdjustHSI14CalibrationValue(16);
+//
+//	RCC_PLLCmd(DISABLE);
+//
+//	while((RCC->CR & RCC_CR_PLLRDY) != 0){};
+//
+//	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
+//
+//	RCC_PLLCmd(ENABLE);
+//
+//	while((RCC->CR & RCC_CR_PLLRDY) == 0){};
+//
+//	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+//
+//	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL){};
+
+
+
+	 /*----------------------------- HSI Configuration --------------------------*/
+
+	/* Enable the Internal High Speed oscillator (HSI). */
+	RCC->CR |= RCC_CR_HSION;
+
+	/* Wait till HSI is ready */
+	while (!(RCC->CR & 0x2)){};//while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET){};
+
+	/* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
+	RCC_AdjustHSI14CalibrationValue(16);
+
+	//Select HSI as System clock
+	RCC->CFGR &= (uint32_t) (~RCC_CFGR_SW);
+
+	//Wait for HSI to be set as system clock
+	while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_HSI){};
+
+
+	RCC_PLLCmd(DISABLE);
+	while((RCC->CR & RCC_CR_PLLRDY) != 0){};
+
+	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
+
+	RCC_PLLCmd(ENABLE);
+
+	while((RCC->CR & RCC_CR_PLLRDY) == 0){};
+
+	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+
+	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL){};
+
+	RCC->APB2ENR |= 0x1; //***
+
+	RCC->CR &= 0xfffeffff;
+
+
+}
