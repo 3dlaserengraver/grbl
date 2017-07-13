@@ -96,9 +96,6 @@ void RCC_OscConfig(void);
 
 void USART1_Configuration(uint32_t BaudRate)
 {
-
-	RCC_OscConfig();
-
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -143,7 +140,7 @@ void USART1_Configuration(uint32_t BaudRate)
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART1->CR1 |= (USART_CR1_RE | USART_CR1_TE);
 	USART_Init(USART1, &USART_InitStructure);
-		//USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
+	//USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 	USART_Cmd(USART1, ENABLE);
 
@@ -197,7 +194,7 @@ int main(void)
 	//Set_System();
 #ifndef USEUSB
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	USART1_Configuration(9600);
+	USART1_Configuration(115200);
 #else
 	Set_USBClock();
 	USB_Interrupts_Config();
@@ -206,7 +203,8 @@ int main(void)
 
 #ifndef NOEEPROMSUPPORT
 	FLASH_Unlock();
-	eeprom_init();
+	eeprom_init();G0 X10
+
 #endif
 	 SysTick->CTRL &= 0xfffffffb;
 #endif
@@ -265,7 +263,9 @@ int main(void)
     serial_reset_read_buffer(); // Clear serial read buffer
     gc_init(); // Set g-code parser to default state
     spindle_init();
+#ifndef STM32F0DISCOVERY
     coolant_init();
+#endif
     limits_init();
     probe_init();
     plan_reset(); // Clear block buffer and planner variables
@@ -327,101 +327,3 @@ void LedBlink(void)
 }
 #endif
 
-//RCC_AdjustHSI14CalibrationValue(16);
-//	RCC_HSICmd(ENABLE);
-//	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
-//	RCC_PLLCmd(ENABLE);
-
-////#define RCC_FLAG_HSIRDY                  ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_HSIRDY_BitNumber))
-//#define RCC_FLAG_HSIRDY                  ((uint8_t)((((uint8_t)1U) << 5U) | 1U))
-//* @retval The new state of __FLAG__ (TRUE or FALSE).
-//*/
-//#define __HAL_RCC_GET_FLAG(__FLAG__) (((((__FLAG__) >> 5U) == CR_REG_INDEX)? RCC->CR :      \
-//                                (((__FLAG__) >> 5U) == CR2_REG_INDEX)? RCC->CR2 :    \
-//                                (((__FLAG__) >> 5U) == BDCR_REG_INDEX) ? RCC->BDCR : \
-//                                RCC->CSR) & (1U << ((__FLAG__) & RCC_FLAG_MASK)))
-
-//	while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET){};
-
-	/* Wait till PLL is disabled */
-//	        while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY)  != RESET)
-//
-//#define __HAL_RCC_GET_FLAG(__FLAG__) (((((__FLAG__) >> 5U) == CR_REG_INDEX)? RCC->CR :      \
-//                                       (((__FLAG__) >> 5U) == CR2_REG_INDEX)? RCC->CR2 :    \
-//                                       (((__FLAG__) >> 5U) == BDCR_REG_INDEX) ? RCC->BDCR : \
-//                                       RCC->CSR) & (1U << ((__FLAG__) & RCC_FLAG_MASK)))
-//
-//#define RCC_FLAG_PLLRDY                  ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_PLLRDY_BitNumber))
-//#define CR_REG_INDEX                     ((uint8_t)1U)
-//#define RCC_CR_PLLRDY_BitNumber           25U
-
-void RCC_OscConfig(void){
-//	//-----HSI Configurations-----
-//	/* Enable the Internal High Speed oscillator (HSI). */
-//	//RCC_HSICmd(ENABLE);
-//
-//	/* Wait till HSI is ready */
-//	//while((RCC->CFGR &RCC_CFGR_SWS) != RCC_CFGR_SWS_HSI){};
-//
-//	if ((RCC->CFGR & RCC_CFGR_SWS) == RCC_CFGR_SWS_PLL) /* (1) */
-//	{
-//		RCC->CFGR &= (uint32_t) (~RCC_CFGR_SW); /* (2) */
-//		while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_HSI){};
-//	}
-//
-//
-//	RCC_AdjustHSI14CalibrationValue(16);
-//
-//	RCC_PLLCmd(DISABLE);
-//
-//	while((RCC->CR & RCC_CR_PLLRDY) != 0){};
-//
-//	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
-//
-//	RCC_PLLCmd(ENABLE);
-//
-//	while((RCC->CR & RCC_CR_PLLRDY) == 0){};
-//
-//	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-//
-//	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL){};
-
-
-
-	 /*----------------------------- HSI Configuration --------------------------*/
-
-	/* Enable the Internal High Speed oscillator (HSI). */
-	RCC->CR |= RCC_CR_HSION;
-
-	/* Wait till HSI is ready */
-	while (!(RCC->CR & 0x2)){};//while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET){};
-
-	/* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
-	RCC_AdjustHSI14CalibrationValue(16);
-
-	//Select HSI as System clock
-	RCC->CFGR &= (uint32_t) (~RCC_CFGR_SW);
-
-	//Wait for HSI to be set as system clock
-	while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_HSI){};
-
-
-	RCC_PLLCmd(DISABLE);
-	while((RCC->CR & RCC_CR_PLLRDY) != 0){};
-
-	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_12);
-
-	RCC_PLLCmd(ENABLE);
-
-	while((RCC->CR & RCC_CR_PLLRDY) == 0){};
-
-	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-
-	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL){};
-
-	RCC->APB2ENR |= 0x1; //***
-
-	RCC->CR &= 0xfffeffff;
-
-
-}

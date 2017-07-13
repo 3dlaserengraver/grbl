@@ -45,6 +45,10 @@
 #ifdef STM32F103C8
 #define CPU_MAP_STM32F103
 #endif
+#ifdef STM32F0DISCOVERY
+#define CPU_MAP_STM32F0DISCOVERY
+#endif
+
 
 // Serial baud rate
 // #define BAUD_RATE 230400
@@ -195,7 +199,7 @@
 // defined at (http://corexy.com/theory.html). Motors are assumed to positioned and wired exactly as
 // described, if not, motions may move in strange directions. Grbl requires the CoreXY A and B motors
 // have the same steps per mm internally.
-// #define COREXY // Default disabled. Uncomment to enable.
+ #define COREXY // Default disabled. Uncomment to enable.
 
 // Inverts pin logic of the control command pins based on a mask. This essentially means you can use
 // normally-closed switches on the specified pins, rather than the default normally-open switches.
@@ -303,7 +307,7 @@
 // NOTE: Changing this value also changes the execution time of a segment in the step segment buffer.
 // When increasing this value, this stores less overall time in the segment buffer and vice versa. Make
 // certain the step segment buffer is increased/decreased to account for these changes.
-#define ACCELERATION_TICKS_PER_SECOND 100
+#define ACCELERATION_TICKS_PER_SECOND 200//100
 
 // Adaptive Multi-Axis Step Smoothing (AMASS) is an advanced feature that does what its name implies,
 // smoothing the stepping of multi-axis motions. This feature smooths motion particularly at low step
@@ -468,7 +472,7 @@
 // 115200 baud will take 5 msec to transmit a typical 55 character report. Worst case reports are
 // around 90-100 characters. As long as the serial TX buffer doesn't get continually maxed, Grbl
 // will continue operating efficiently. Size the TX buffer around the size of a worst-case report.
-#if !defined (STM32F103C8)
+#if !defined (STM32F103C8) && !defined(STM32F0DISCOVERY)
 // #define RX_BUFFER_SIZE 128 // (1-254) Uncomment to override defaults in serial.h
 // #define TX_BUFFER_SIZE 100 // (1-254)
 #endif

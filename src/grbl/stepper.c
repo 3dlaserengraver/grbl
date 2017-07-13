@@ -287,6 +287,8 @@ void st_wake_up()
   st.step_pulse_time = (settings.pulse_microseconds)*TICKS_PER_MICROSECOND;
 #elif defined(STM32F103C8)
   st.step_pulse_time = (settings.pulse_microseconds)*TICKS_PER_MICROSECOND;
+#elif defined(STM32F0DISCOVERY)
+  st.step_pulse_time = (settings.pulse_microseconds)*TICKS_PER_MICROSECOND;
 #endif
   #endif
 
@@ -305,6 +307,19 @@ void st_wake_up()
   TIM2->ARR = st.exec_segment->cycles_per_tick - 1;
   /* Set the Autoreload value */
 #ifndef ADAPTIVE_MULTI_AXIS_STEP_SMOOTHING        
+  TIM2->PSC = st.exec_segment->prescaler;
+#endif
+  TIM2->EGR = TIM_PSCReloadMode_Immediate;
+  NVIC_EnableIRQ(TIM2_IRQn);
+#endif
+#if defined (STM32F0DISCOVERY)
+  TIM3->ARR = st.step_pulse_time - 1;
+  TIM3->EGR = TIM_PSCReloadMode_Immediate;
+  TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+
+  TIM2->ARR = st.exec_segment->cycles_per_tick - 1;
+  /* Set the Autoreload value */
+#ifndef ADAPTIVE_MULTI_AXIS_STEP_SMOOTHING
   TIM2->PSC = st.exec_segment->prescaler;
 #endif
   TIM2->EGR = TIM_PSCReloadMode_Immediate;
