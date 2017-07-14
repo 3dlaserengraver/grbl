@@ -192,7 +192,7 @@ uint8_t limits_get_state()
 #if defined(AVRTARGET) 
 ISR(LIMIT_INT_vect) // DEFAULT: Limit pin change interrupt process.
 #else
-void EXTI15_10_IRQHandler(void)
+void EXTI4_15_IRQHandler(void)
 #endif
 {
 #if defined (STM32F103C8)

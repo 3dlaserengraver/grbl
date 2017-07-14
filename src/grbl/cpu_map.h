@@ -405,23 +405,23 @@
   // Define step pulse output pins. NOTE: All step bit pins must be on the same port.
 #define STEP_PORT       GPIOA
 #define RCC_STEP_PORT   RCC_AHBPeriph_GPIOA
-#define X_STEP_BIT      0
-#define Y_STEP_BIT      1
-#define Z_STEP_BIT      2
+#define X_STEP_BIT      1
+#define Y_STEP_BIT      2
+#define Z_STEP_BIT      3
 #define STEP_MASK       ((1<<X_STEP_BIT)|(1<<Y_STEP_BIT)|(1<<Z_STEP_BIT)) // All step bits
 
   // Define step direction output pins. NOTE: All direction pins must be on the same port.
 #define DIRECTION_PORT      GPIOA
 #define RCC_DIRECTION_PORT   RCC_AHBPeriph_GPIOA
-#define X_DIRECTION_BIT   3
-#define Y_DIRECTION_BIT   4
-#define Z_DIRECTION_BIT   5
+#define X_DIRECTION_BIT   4
+#define Y_DIRECTION_BIT   5
+#define Z_DIRECTION_BIT   6
 #define DIRECTION_MASK    ((1<<X_DIRECTION_BIT)|(1<<Y_DIRECTION_BIT)|(1<<Z_DIRECTION_BIT)) // All direction bits
 
   // Define stepper driver enable/disable output pin.
 #define STEPPERS_DISABLE_PORT   GPIOA
 #define RCC_STEPPERS_DISABLE_PORT RCC_AHBPeriph_GPIOA
-#define STEPPERS_DISABLE_BIT    6
+#define STEPPERS_DISABLE_BIT    7
 #define STEPPERS_DISABLE_MASK   (1<<STEPPERS_DISABLE_BIT)
 #define SetStepperDisableBit() GPIO_SetBits(STEPPERS_DISABLE_PORT,STEPPERS_DISABLE_MASK)
 #define ResetStepperDisableBit() GPIO_ResetBits(STEPPERS_DISABLE_PORT,STEPPERS_DISABLE_MASK)
