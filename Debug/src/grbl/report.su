@@ -13,10 +13,10 @@ report.c:169:6:report_init_message	8	static
 report.c:175:6:report_grbl_help	8	static
 report.c:182:6:report_grbl_settings	24	static
 report.c:230:6:report_probe_parameters	24	static
-report.c:244:6:report_ngc_parameters	24	static
+report.c:244:6:report_ngc_parameters	32	static
 report.c:274:6:report_gcode_modes	8	static
 report.c:351:6:report_startup_line	16	static
 report.c:360:6:report_execute_startup_message	16	static
 report.c:369:6:report_build_info	16	static
 report.c:448:6:report_echo_line_received	16	static
-report.c:460:6:report_realtime_status	64	static
+report.c:460:6:report_realtime_status	72	static

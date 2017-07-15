@@ -410,6 +410,15 @@
 #define Z_STEP_BIT      3
 #define STEP_MASK       ((1<<X_STEP_BIT)|(1<<Y_STEP_BIT)|(1<<Z_STEP_BIT)) // All step bits
 
+  // Define bits for 28BYJ-48 Stepper motor control board (head rotation) A-Axis
+#define STEP_PORT2		GPIOC
+#define RCC_STEP_PORT2	RCC_AHBPeriph_GPIOC
+#define A_STEP_BIT_0	GPIO_Pin_10
+#define A_STEP_BIT_1	GPIO_Pin_11
+#define A_STEP_BIT_2	GPIO_Pin_12
+#define A_STEP_BIT_3	GPIO_Pin_13
+#define STEP_MASK2		(A_STEP_BIT_0 | A_STEP_BIT_1 | A_STEP_BIT_2 | A_STEP_BIT_3)
+
   // Define step direction output pins. NOTE: All direction pins must be on the same port.
 #define DIRECTION_PORT      GPIOA
 #define RCC_DIRECTION_PORT   RCC_AHBPeriph_GPIOA
@@ -436,8 +445,9 @@
 #define X_LIMIT_BIT      10
 #define Y_LIMIT_BIT      11
 #define Z_LIMIT_BIT      12
+#define A_LIMIT_BIT      13
 
-#define LIMIT_MASK       ((1<<X_LIMIT_BIT)|(1<<Y_LIMIT_BIT)|(1<<Z_LIMIT_BIT)) // All limit bits
+#define LIMIT_MASK       ((1<<X_LIMIT_BIT)|(1<<Y_LIMIT_BIT)|(1<<Z_LIMIT_BIT)|(1<<A_LIMIT_BIT)) // All limit bits
 
   // Define spindle enable and spindle direction output pins.
 #define SPINDLE_ENABLE_PORT   GPIOB
@@ -499,17 +509,17 @@
 #define SPINDLE_PWM_RANGE         (SPINDLE_PWM_MAX_VALUE-SPINDLE_PWM_MIN_VALUE)
 
   //  Port A                                         Port B
-  //   0      X_STEP_BIT                            SPINDLE_ENABLE_BIT
-  //   1      Y_STEP_BIT                            SPINDLE_DIRECTION_BIT
-  //   2      Z_STEP_BIT                            COOLANT_FLOOD_BIT
-  //   3      X_DIRECTION_BIT                       COOLANT_MIST_BIT
-  //   4      Y_DIRECTION_BIT
-  //   5      Z_DIRECTION_BIT                       CONTROL_RESET_BIT
-  //   6      STEPPERS_DISABLE_BIT                  CONTROL_FEED_HOLD_BIT
-  //   7                                            CONTROL_CYCLE_START_BIT
+  //   0                                            SPINDLE_ENABLE_BIT
+  //   1      X_STEP_BIT                            SPINDLE_DIRECTION_BIT
+  //   2      Y_STEP_BIT                            COOLANT_FLOOD_BIT
+  //   3      Z_STEP_BIT                            COOLANT_MIST_BIT
+  //   4      X_DIRECTION_BIT
+  //   5      Y_DIRECTION_BIT                       CONTROL_RESET_BIT
+  //   6      Z_DIRECTION_BIT                       CONTROL_FEED_HOLD_BIT
+  //   7      STEPPERS_DISABLE_BIT                  CONTROL_CYCLE_START_BIT
   //   8      SPINDLE_PWM_BIT                       CONTROL_SAFETY_DOOR_BIT
-  //   9
-  //   10                                            X_LIMIT_BIT
+  //   9      USART
+  //   10     USART                                  X_LIMIT_BIT
   //   11                                            Y_LIMIT_BIT
   //   12                                            Z_LIMIT_BIT
   //   13 14 SWD

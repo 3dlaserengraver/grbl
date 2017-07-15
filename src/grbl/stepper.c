@@ -141,7 +141,8 @@ typedef struct {
   // Used by the bresenham line algorithm
   uint32_t counter_x,        // Counter variables for the bresenham line tracer
            counter_y,
-           counter_z;
+           counter_z,
+  	  	   counter_a;
   #ifdef STEP_PULSE_DELAY
     uint8_t step_bits;  // Stores out_bits output to complete the step pulse delay
   #endif
@@ -478,6 +479,8 @@ void Timer1Proc()
 #endif
 #ifdef STM32F0DISCOVERY
 	GPIO_Write(STEP_PORT, (GPIO_ReadOutputData(STEP_PORT) & ~STEP_MASK) | st.step_outbits);
+	// increment 28ByJ-48 step with ULN2003 driver board
+
 #endif
   #endif
 
@@ -550,7 +553,7 @@ void Timer1Proc()
         st.exec_block = &st_block_buffer[st.exec_block_index];
 
         // Initialize Bresenham line and distance counters
-        st.counter_x = st.counter_y = st.counter_z = (st.exec_block->step_event_count >> 1);
+        st.counter_x = st.counter_y = st.counter_z =st.counter_a = (st.exec_block->step_event_count >> 1);
       }
       st.dir_outbits = st.exec_block->direction_bits ^ dir_port_invert_mask;
 
@@ -559,6 +562,7 @@ void Timer1Proc()
         st.steps[X_AXIS] = st.exec_block->steps[X_AXIS] >> st.exec_segment->amass_level;
         st.steps[Y_AXIS] = st.exec_block->steps[Y_AXIS] >> st.exec_segment->amass_level;
         st.steps[Z_AXIS] = st.exec_block->steps[Z_AXIS] >> st.exec_segment->amass_level;
+        st.steps[A_AXIS] = st.exec_block->steps[A_AXIS] >> st.exec_segment->amass_level;
       #endif
 
       #ifdef VARIABLE_SPINDLE
@@ -619,6 +623,19 @@ void Timer1Proc()
     if (st.exec_block->direction_bits & (1<<Z_DIRECTION_BIT)) { sys_position[Z_AXIS]--; }
     else { sys_position[Z_AXIS]++; }
   }
+//#ifdef A_AXIS
+//  #ifdef ADAPTIVE_MULTI_AXIS_STEP_SMOOTHING
+//    st.counter_a += st.steps[A_AXIS];
+//  #else
+//    st.counter_a += st.exec_block->steps[A_AXIS];
+//  #endif
+//  if (st.counter_a > st.exec_block->step_event_count) {
+//    st.step_outbits |= (1<<Z_STEP_BIT); // TODO: Adapt this
+//    st.counter_a -= st.exec_block->step_event_count;
+//    if (st.exec_block->direction_bits & (1<<Z_DIRECTION_BIT)) { sys_position[A_AXIS]--; }
+//    else { sys_position[A_AXIS]++; }
+//  }
+//#endif
 
   // During a homing cycle, lock out and prevent desired axes from moving.
   if (sys.state == STATE_HOMING) { st.step_outbits &= sys.homing_axis_lock; }
@@ -839,6 +856,10 @@ void stepper_init()
 	RCC_APB2PeriphClockCmd(RCC_DIRECTION_PORT, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = DIRECTION_MASK;
 	GPIO_Init(DIRECTION_PORT, &GPIO_InitStructure);
+
+	RCC_APB2PeriphClockCmd(RCC_STEP_PORT2, ENABLE);
+	GPIO_InitStructure.GPIO_Pin = STEP_MASK2;
+	GPIO_Init(STEP_PORT2, &GPIO_InitStructure);
 
 	RCC->APB1ENR |= RCC_APB1Periph_TIM2;
 	TIM_Configuration(TIM2, 1, 1, 1);

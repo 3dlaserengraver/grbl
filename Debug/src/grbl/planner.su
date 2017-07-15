@@ -11,7 +11,7 @@ planner.c:250:9:plan_check_full_buffer	8	static
 planner.c:259:7:plan_compute_profile_nominal_speed	24	static
 planner.c:274:13:plan_compute_profile_parameters	24	static
 planner.c:284:6:plan_update_velocity_profile_parameters	32	static
-planner.c:315:9:plan_buffer_line	104	static
+planner.c:315:9:plan_buffer_line	120	static
 planner.c:477:6:plan_sync_position	16	static
 planner.c:499:9:plan_get_block_buffer_available	8	static
 planner.c:508:9:plan_get_block_buffer_count	8	static
