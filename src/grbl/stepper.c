@@ -36,6 +36,7 @@ typedef int bool;
 void TIM_Configuration(TIM_TypeDef* TIMER, uint16_t Period, uint16_t Prescaler, uint8_t PP);
 #endif
 
+unsigned int lookUpIndex = 0;
 
 // Some useful constants.
 #define DT_SEGMENT (1.0f/(ACCELERATION_TICKS_PER_SECOND*60.0f)) // min/segment
@@ -61,13 +62,25 @@ const PORTPINDEF direction_pin_mask[N_AXIS] =
 	1 << X_DIRECTION_BIT,
 	1 << Y_DIRECTION_BIT,
 	1 << Z_DIRECTION_BIT,
+	1, // Use for A_Axis, Safe because A0 unmapped
 };
 const PORTPINDEF limit_pin_mask[N_AXIS] =
 {
 	1 << X_LIMIT_BIT,
 	1 << Y_LIMIT_BIT,
 	1 << Z_LIMIT_BIT,
+	1 << A_LIMIT_BIT,
 };
+
+const uint16_t A_AXIS_LUT [8] = { A_STEP_BIT_3,
+								 (A_STEP_BIT_3 | A_STEP_BIT_2),
+								 A_STEP_BIT_2,
+								 (A_STEP_BIT_2 | A_STEP_BIT_1),
+								 A_STEP_BIT_1,
+								 (A_STEP_BIT_1 | A_STEP_BIT_0),
+								 A_STEP_BIT_0,
+								 (A_STEP_BIT_0 | A_STEP_BIT_3)
+								};
 
 // Define Adaptive Multi-Axis Step-Smoothing(AMASS) levels and cutoff frequencies. The highest level
 // frequency bin starts at 0Hz and ends at its cutoff frequency. The next lower level frequency bin
@@ -479,7 +492,8 @@ void Timer1Proc()
 #endif
 #ifdef STM32F0DISCOVERY
 	GPIO_Write(STEP_PORT, (GPIO_ReadOutputData(STEP_PORT) & ~STEP_MASK) | st.step_outbits);
-	// increment 28ByJ-48 step with ULN2003 driver board
+	// 28ByJ-48 step with ULN2003 driver board output
+	GPIO_Write(STEP_PORT2, (GPIO_ReadOutputData(STEP_PORT2) & ~STEP_MASK2) | A_AXIS_LUT[lookUpIndex]);
 
 #endif
   #endif
@@ -623,19 +637,24 @@ void Timer1Proc()
     if (st.exec_block->direction_bits & (1<<Z_DIRECTION_BIT)) { sys_position[Z_AXIS]--; }
     else { sys_position[Z_AXIS]++; }
   }
-//#ifdef A_AXIS
-//  #ifdef ADAPTIVE_MULTI_AXIS_STEP_SMOOTHING
-//    st.counter_a += st.steps[A_AXIS];
-//  #else
-//    st.counter_a += st.exec_block->steps[A_AXIS];
-//  #endif
-//  if (st.counter_a > st.exec_block->step_event_count) {
-//    st.step_outbits |= (1<<Z_STEP_BIT); // TODO: Adapt this
-//    st.counter_a -= st.exec_block->step_event_count;
-//    if (st.exec_block->direction_bits & (1<<Z_DIRECTION_BIT)) { sys_position[A_AXIS]--; }
-//    else { sys_position[A_AXIS]++; }
-//  }
-//#endif
+#ifdef A_AXIS
+  #ifdef ADAPTIVE_MULTI_AXIS_STEP_SMOOTHING
+    st.counter_a += st.steps[A_AXIS];
+  #else
+    st.counter_a += st.exec_block->steps[A_AXIS];
+  #endif
+  if (st.counter_a > st.exec_block->step_event_count) {
+    st.counter_a -= st.exec_block->step_event_count;
+    if (st.exec_block->direction_bits & (0x1)) {
+    	sys_position[A_AXIS]--;
+    	lookUpIndex = (lookUpIndex - 1) & 0x7;
+    }
+    else {
+    	sys_position[A_AXIS]++;
+    	lookUpIndex = (lookUpIndex + 1) & 0x7;
+    }
+  }
+#endif
 
   // During a homing cycle, lock out and prevent desired axes from moving.
   if (sys.state == STATE_HOMING) { st.step_outbits &= sys.homing_axis_lock; }
