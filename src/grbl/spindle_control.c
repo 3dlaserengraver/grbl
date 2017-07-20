@@ -102,7 +102,7 @@ void spindle_init()
 #endif
 #if defined (STM32F0DISCOVERY)
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_SPINDLE_ENABLE_PORT, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_SPINDLE_ENABLE_PORT, ENABLE);
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
@@ -129,7 +129,7 @@ void spindle_init()
   TIM_TimeBaseInit(TIM1, &timerInitStructure);
 
   outputChannelInit.TIM_OCMode = TIM_OCMode_PWM1;
-  outputChannelInit.TIM_Pulse = 0;     // initi speed is 0
+  outputChannelInit.TIM_Pulse = 0;     // initial speed is 0
   outputChannelInit.TIM_OutputState = TIM_OutputState_Enable;
   outputChannelInit.TIM_OCPolarity = TIM_OCPolarity_High;
 
@@ -138,7 +138,7 @@ void spindle_init()
   TIM_CtrlPWMOutputs(TIM1, DISABLE);
   TIM_Cmd(TIM1, ENABLE);
 
-  RCC_APB2PeriphClockCmd(RCC_SPINDLE_PWM_PORT, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_SPINDLE_PWM_PORT, ENABLE);
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -146,6 +146,7 @@ void spindle_init()
   GPIO_InitStructure.GPIO_Pin = 1 << SPINDLE_PWM_BIT;
   GPIO_Init(SPINDLE_PWM_PORT, &GPIO_InitStructure);
 
+  GPIO_PinAFConfig(SPINDLE_PWM_PORT, GPIO_PinSource8, GPIO_AF_2);
 
 #endif
 #endif

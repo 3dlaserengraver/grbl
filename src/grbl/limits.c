@@ -334,7 +334,7 @@ void limits_go_home(uint8_t cycle_mask)
             sys_position[A_MOTOR] = sys_position[B_MOTOR] = axis_position;
           } else {
             sys_position[Z_AXIS] = 0;
-          }
+            sys_position[A_AXIS] = 0;          }
         #else
           sys_position[idx] = 0;
         #endif
@@ -371,6 +371,7 @@ void limits_go_home(uint8_t cycle_mask)
             if (limit_state & (1 << idx)) {
               #ifdef COREXY
                 if (idx==Z_AXIS) { axislock &= ~(step_pin[Z_AXIS]); }
+                else if (idx==A_AXIS) { axislock &= ~(step_pin[A_AXIS]); }
                 else { axislock &= ~(step_pin[A_MOTOR]|step_pin[B_MOTOR]); }
               #else
                 axislock &= ~(step_pin[idx]);
@@ -405,7 +406,7 @@ void limits_go_home(uint8_t cycle_mask)
         }
       }
 
-    } while (STEP_MASK & axislock);
+    } while ((STEP_MASK | 1) & axislock); // one for A axis since it has 4 pins on another port
 
     st_reset(); // Immediately force kill steppers and reset step segment buffer.
     delay_ms(settings.homing_debounce_delay); // Delay to allow transient dynamics to dissipate.

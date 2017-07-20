@@ -55,7 +55,7 @@ const PORTPINDEF step_pin_mask[N_AXIS] =
 	1 << X_STEP_BIT,
 	1 << Y_STEP_BIT,
 	1 << Z_STEP_BIT,
-
+	1, // Use for A_Axis, Safe because A0 unmapped
 };
 const PORTPINDEF direction_pin_mask[N_AXIS] =
 {
@@ -657,7 +657,13 @@ void Timer1Proc()
 #endif
 
   // During a homing cycle, lock out and prevent desired axes from moving.
-  if (sys.state == STATE_HOMING) { st.step_outbits &= sys.homing_axis_lock; }
+  if (sys.state == STATE_HOMING) {
+	  st.step_outbits &= sys.homing_axis_lock;
+	  // A axis
+	  if(~(sys.homing_axis_lock) & 0x1) {
+		  lookUpIndex = 0;
+	  }
+  }
 
   st.step_count--; // Decrement step events count
   if (st.step_count == 0) {

@@ -2,5 +2,5 @@ motion_control.c:32:6:mc_line	16	static
 motion_control.c:87:6:mc_arc	96	static
 motion_control.c:195:6:mc_dwell	16	static
 motion_control.c:206:6:mc_homing_cycle	16	static
-motion_control.c:256:9:mc_probe_cycle	40	static
-motion_control.c:362:6:mc_reset	8	static
+motion_control.c:259:9:mc_probe_cycle	40	static
+motion_control.c:365:6:mc_reset	8	static
