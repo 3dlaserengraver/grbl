@@ -645,13 +645,16 @@ void Timer1Proc()
   #endif
   if (st.counter_a > st.exec_block->step_event_count) {
     st.counter_a -= st.exec_block->step_event_count;
+    /*if (sys.state == STATE_HOMING) {
+    	st.exec_block->direction_bits ^= 0x1;
+    }*/
     if (st.exec_block->direction_bits & (0x1)) {
     	sys_position[A_AXIS]--;
-    	lookUpIndex = (lookUpIndex - 1) & 0x7;
+    	lookUpIndex = (lookUpIndex + 1) & 0x7;
     }
     else {
     	sys_position[A_AXIS]++;
-    	lookUpIndex = (lookUpIndex + 1) & 0x7;
+    	lookUpIndex = (lookUpIndex - 1) & 0x7;
     }
   }
 #endif

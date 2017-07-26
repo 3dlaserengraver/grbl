@@ -105,6 +105,7 @@ void limits_init()
 		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, X_LIMIT_BIT);
 		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, Y_LIMIT_BIT);
 		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, Z_LIMIT_BIT);
+		SYSCFG_EXTILineConfig(GPIO_LIMIT_PORT, A_LIMIT_BIT);
 
 		EXTI_InitTypeDef EXTI_InitStructure;
 		EXTI_InitStructure.EXTI_Line = LIMIT_MASK;    //
@@ -223,6 +224,10 @@ void EXTI4_15_IRQHandler(void)
 	{
 		EXTI_ClearITPendingBit(1 << Z_LIMIT_BIT);
 	}
+	if (EXTI_GetITStatus(1 << A_LIMIT_BIT) != RESET)
+	{
+		EXTI_ClearITPendingBit(1 << A_LIMIT_BIT);
+	}
 	NVIC_ClearPendingIRQ(EXTI4_15_IRQn);
 #endif
   // Ignore limit switches if already in an alarm state or in-process of executing an alarm.
@@ -289,7 +294,7 @@ void limits_go_home(uint8_t cycle_mask)
   #endif
 
   // Initialize variables used for homing computations.
-  uint8_t n_cycle = (2*N_HOMING_LOCATE_CYCLE+1);
+  //uint8_t n_cycle = (2*N_HOMING_LOCATE_CYCLE+1);
   uint8_t step_pin[N_AXIS];
   float target[N_AXIS];
   float max_travel = 0.0f;
@@ -313,7 +318,7 @@ void limits_go_home(uint8_t cycle_mask)
   float homing_rate = settings.homing_seek_rate;
 
   uint8_t limit_state, axislock, n_active_axis;
-  do {
+  //do {
 
     system_convert_array_steps_to_mpos(target,sys_position);
 
@@ -367,15 +372,17 @@ void limits_go_home(uint8_t cycle_mask)
         // Check limit state. Lock out cycle axes when they change.
         limit_state = limits_get_state();
         for (idx=0; idx<N_AXIS; idx++) {
-          if (axislock & step_pin[idx]) {
-            if (limit_state & (1 << idx)) {
-              #ifdef COREXY
-                if (idx==Z_AXIS) { axislock &= ~(step_pin[Z_AXIS]); }
-                else if (idx==A_AXIS) { axislock &= ~(step_pin[A_AXIS]); }
-                else { axislock &= ~(step_pin[A_MOTOR]|step_pin[B_MOTOR]); }
-              #else
-                axislock &= ~(step_pin[idx]);
-              #endif
+          if (bit_istrue(cycle_mask,bit(idx))) {
+            if (axislock & step_pin[idx]) {
+              if (limit_state & (1 << idx)) {
+                #ifdef COREXY
+                  if (idx==Z_AXIS) { axislock &= ~(step_pin[Z_AXIS]); }
+                  else if (idx==A_AXIS) { axislock &= ~(step_pin[A_AXIS]); }
+                  else { axislock &= ~(step_pin[A_MOTOR]|step_pin[B_MOTOR]); }
+                #else
+                  axislock &= ~(step_pin[idx]);
+                #endif
+              }
             }
           }
         }
@@ -383,6 +390,7 @@ void limits_go_home(uint8_t cycle_mask)
       }
 
       st_prep_buffer(); // Check and prep segment buffer. NOTE: Should take no longer than 200us.
+      //printPgmString(PSTR("Testing Exit Condition:")); // for debugging
 
       // Exit routines: No time to run protocol_execute_realtime() in this loop.
       if (sys_rt_exec_state & (EXEC_SAFETY_DOOR | EXEC_RESET | EXEC_CYCLE_STOP)) {
@@ -423,7 +431,7 @@ void limits_go_home(uint8_t cycle_mask)
       homing_rate = settings.homing_seek_rate;
     }
 
-  } while (n_cycle-- > 0);
+  //} while (n_cycle-- > 0);
 
   // The active cycle axes should now be homed and machine limits have been located. By
   // default, Grbl defines machine space as all negative, as do most CNCs. Since limit switches
